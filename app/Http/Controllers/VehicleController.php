@@ -84,22 +84,34 @@ class VehicleController extends Controller
     }
 
 public function index(Request $request)
-{
-    $query = Vehicle::query()->where('status', 'Available');
+    {
+        // Query builder for filtering and sorting
+        $query = Vehicle::query()->where('status', 'Available');
 
-    if ($request->filled('category')) {
-        $query->where('category', $request->category);
-    }
+        // Filter by category
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
 
-    if ($request->filled('price_min')) {
-        $query->where('price_per_day', '>=', $request->price_min);
-    }
+        // Filter by price range
+        if ($request->filled('price_min')) {
+            $query->where('price_per_day', '>=', $request->price_min);
+        }
 
-    if ($request->filled('price_max')) {
-        $query->where('price_per_day', '<=', $request->price_max);
-    }
+        if ($request->filled('price_max')) {
+            $query->where('price_per_day', '<=', $request->price_max);
+        }
 
-    return response()->json($query->get());
+        // Sort results (default to ascending)
+        if ($request->filled('sort_by')) {
+            $sortDirection = $request->filled('sort_direction') && $request->sort_direction === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($request->sort_by, $sortDirection);
+        }
+
+        // Get the results and return them as JSON
+        $vehicles = $query->get();
+
+        return response()->json($vehicles);
+    }
 }
-
 }
