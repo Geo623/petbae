@@ -18,7 +18,11 @@ class Vehicle extends Model
         'features' => 'array',
     ];
 
-    public function category()
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+    /*public function category()
     {
         return $this->belongsTo(Category::class);
     }
@@ -26,5 +30,5 @@ class Vehicle extends Model
     public function pricing()
     {
         return $this->hasMany(Pricing::class);
-    }
+    }*/
 }
