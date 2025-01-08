@@ -26,7 +26,7 @@ Route::middleware(['auth:api', 'role:customer'])->group(function () {
     Route::get('/customer/dashboard', function () {
         return 'Customer Dashboard';
     });
-    Route::get('/v1/vehicles', [VehicleController::class, 'listAvailableVehicles']);
+    Route::get('/v1/vehicles', [VehicleController::class, 'index']);
     Route::post('/v1/bookings', [BookingController::class, 'createBooking']);
     Route::get('/v1/bookings/{booking}', [BookingController::class, 'getBookingDetails']);
 });
