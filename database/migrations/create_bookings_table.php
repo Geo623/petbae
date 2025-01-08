@@ -14,14 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('driver_license_number');
-            $table->enum('status', ['Pending', 'Confirmed', 'Completed', 'Cancelled'])->default('Pending');
-            $table->timestamps();
-        });
+    $table->id();
+    $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->date('start_date');
+    $table->date('end_date');
+    $table->enum('status', ['Pending', 'Confirmed', 'Completed', 'Cancelled']);
+    $table->decimal('total_price', 10, 2);
+    $table->timestamps();
+});
     }
 
     /**
