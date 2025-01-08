@@ -11,7 +11,12 @@ class Vehicle extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id', 'status', 'features', 'specifications', 'image'];
+    protected $fillable = [//'name', 'category_id', 'status', 'features', 'specifications', 'image'
+        'name', 'category', 'price_per_day', 'status', 'features','image'];
+
+    protected $casts = [
+        'features' => 'array',
+    ];
 
     public function category()
     {
