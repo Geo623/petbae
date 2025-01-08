@@ -14,15 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('vehicles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['Available', 'Under Maintenance', 'Currently Rented', 'Reserved'])->default('Available');
-            $table->text('features');
-            $table->text('specifications');
-            $table->string('image')->nullable();
-            $table->timestamps();
-        });
+        $table->id();
+        $table->string('name');
+        $table->enum('category', ['Economy', 'Luxury', 'SUV']);
+        $table->decimal('price_per_day', 8, 2);
+        $table->enum('status', ['Available', 'Under Maintenance', 'Currently Rented', 'Reserved']);
+        $table->text('features')->nullable();
+        $table->string('image')->nullable();
+        $table->timestamps();
+});
     }
 
     /**
