@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role)
-    {
-        if (Auth::user() && Auth::user()->role === $role) {
-            return $next($request);
-        }
+   public function handle($request, Closure $next, $role)
+{
+    if ($request->user()->role !== $role) {
         return response()->json(['error' => 'Unauthorized'], 403);
     }
+    return $next($request);
+}
 }
