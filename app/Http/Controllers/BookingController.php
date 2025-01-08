@@ -92,4 +92,35 @@ class BookingController extends Controller
             ]
         ], 200);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'vehicle_id' => 'required|exists:vehicles,id',
+            'start_date' => 'required|date|after:today',
+            'end_date' => 'required|date|after:start_date',
+        ]);
+    
+        $vehicle = Vehicle::find($request->vehicle_id);
+    
+        if ($vehicle->status !== 'Available') {
+            return response()->json(['error' => 'Vehicle not available'], 400);
+        }
+    
+        $totalPrice = $vehicle->price_per_day * (new Carbon($request->end_date))->diffInDays(new Carbon($request->start_date));
+    
+        Booking::create([
+            'vehicle_id' => $request->vehicle_id,
+            'user_id' => auth()->id(),
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'status' => 'Pending',
+            'total_price' => $totalPrice,
+        ]);
+    
+        $vehicle->update(['status' => 'Reserved']);
+    
+        return response()->json(['message' => 'Booking created successfully']);
+    }
+
 }
