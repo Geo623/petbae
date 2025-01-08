@@ -82,4 +82,24 @@ class VehicleController extends Controller
             'vehicle' => $vehicle,
         ], 201);
     }
+
+public function index(Request $request)
+{
+    $query = Vehicle::query()->where('status', 'Available');
+
+    if ($request->filled('category')) {
+        $query->where('category', $request->category);
+    }
+
+    if ($request->filled('price_min')) {
+        $query->where('price_per_day', '>=', $request->price_min);
+    }
+
+    if ($request->filled('price_max')) {
+        $query->where('price_per_day', '<=', $request->price_max);
+    }
+
+    return response()->json($query->get());
+}
+
 }
